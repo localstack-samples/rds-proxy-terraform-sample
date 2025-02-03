@@ -1,0 +1,16 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 576
+      Handler: cloud.localstack.getdog.GetDogHandler
+      CodeUri: /Users/anca/Workspace/github/aqua-localstack/dog-api-lambdas/get-dog-lambda
+      Runtime: java21
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          DATABASE_NAME: dogs
+          DB_CLUSTER_ARN: arn:aws:rds:us-east-1:000000000000:cluster:dogdb-cluster
+          SECRET_ARN: arn:aws:secretsmanager:us-east-1:000000000000:secret:super-secret-TTeTEX

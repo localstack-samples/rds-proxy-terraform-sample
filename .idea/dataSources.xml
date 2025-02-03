@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="postgres@localstack" uuid="713a36a4-e440-4665-8e1d-15e441611553">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost.localstack.cloud:4510/dogs</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="AWS.SecretId" value="arn:aws:secretsmanager:us-east-1:000000000000:secret:super-secret-TTeTEX" />
+        <property name="AWS.RegionId" value="us-east-1" />
+        <property name="AWS.getUrlFromSecret" value="false" />
+        <property name="AWS.CredentialId" value="profile:localstack" />
+        <property name="AWS.RdsSigningHost" value="localhost.localstack.cloud" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>
