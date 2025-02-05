@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Properties;
 
 public class DatabaseUtil {
 
@@ -69,7 +70,12 @@ public class DatabaseUtil {
                 host, databaseName);
 
         try {
-            return DriverManager.getConnection(jdbcUrl, username, authToken);
+            Properties properties = new Properties();
+            properties.setProperty("useSSL", "true");
+            properties.setProperty("user", username);
+            properties.setProperty("password", authToken);
+
+            return DriverManager.getConnection(jdbcUrl, properties);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Database connection failed using IAM authentication", e);

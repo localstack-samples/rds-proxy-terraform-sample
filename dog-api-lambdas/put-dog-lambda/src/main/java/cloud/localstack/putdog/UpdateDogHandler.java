@@ -21,7 +21,6 @@ public class UpdateDogHandler implements RequestHandler<Map<String, Object>, Map
 
     {
         connection = DatabaseUtil.getConnectionWithIamAuth(DB_USER, HOST, PORT, REGION, DATABASE_NAME);
-
     }
 
     @Override
