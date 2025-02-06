@@ -1,0 +1,1 @@
+{"statusCode":500,"body":"Error granting roles: ERROR: role \"token_user\" already exists"}

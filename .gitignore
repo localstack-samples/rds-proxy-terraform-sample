@@ -36,3 +36,15 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/terraform/.terraform/
+/terraform/.terraform.lock.hcl
+/terraform/output.json
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup
+/api-lambdas/db-setup-lambda/target
+/api-lambdas/delete-dog-lambda/target
+/api-lambdas/put-dog-lambda/target
+/api-lambdas/post-dog-lambda/target
+/api-lambdas/get-dog-lambda/target
+
