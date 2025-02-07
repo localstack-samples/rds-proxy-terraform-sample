@@ -28,44 +28,28 @@ public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<St
         try (Connection conn = getDbConnection();
              Statement stmt = conn.createStatement()) {
 
+            // Create the dogs table
             String createTableQuery = "CREATE TABLE IF NOT EXISTS dogs (" +
                     "id SERIAL PRIMARY KEY, " +
                     "name VARCHAR(100), " +
                     "age INT, " +
-                    "category VARCHAR(50));";
+                    "category VARCHAR(50))";
+            stmt.executeUpdate(createTableQuery);
+
+            // Create user token_user
+            stmt.executeUpdate("CREATE USER token_user");
 
             // Grant roles to token_user
-            String grantRolesQuery = "CREATE USER token_user;" +
-                    " GRANT rds_iam TO token_user;" +
-                    " ALTER USER token_user WITH LOGIN;" +
+            stmt.executeUpdate("GRANT rds_iam TO token_user");
+            stmt.executeUpdate("ALTER USER token_user WITH LOGIN");
+            stmt.executeUpdate("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO token_user");
+            stmt.executeUpdate("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO token_user");
+            stmt.executeUpdate("GRANT USAGE, SELECT, UPDATE ON SEQUENCE dogs_id_seq TO token_user");
 
-                    " GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO token_user;" +
-                    " ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO token_user;" +
-                    " GRANT USAGE, SELECT, UPDATE ON SEQUENCE dogs_id_seq TO token_user;" +
-
-
-                    " GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public dogs TO lambda_user;" +
-                    " ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO lambda_user;" +
-                    " GRANT USAGE, SELECT, UPDATE ON SEQUENCE dogs_id_seq TO lambda_user;";
-
-            try {
-                stmt.executeUpdate(createTableQuery);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return Map.of(
-                        "statusCode", 500,
-                        "body", "Error creating table: " + e.getMessage()
-                );
-            }
-            try {
-                stmt.executeUpdate(grantRolesQuery);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return Map.of(
-                        "statusCode", 500,
-                        "body", "Error granting roles: " + e.getMessage()
-                );
-            }
+            // Grant roles to lambda_user
+            stmt.executeUpdate("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO lambda_user");
+            stmt.executeUpdate("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO lambda_user");
+            stmt.executeUpdate("GRANT USAGE, SELECT, UPDATE ON SEQUENCE dogs_id_seq TO lambda_user");
 
             return Map.of(
                     "statusCode", 200,

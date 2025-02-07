@@ -181,7 +181,7 @@ resource "aws_db_proxy" "dogdb_secret_proxy" {
   require_tls = true
 
   auth {
-    description = "RDS Proxy Auth"
+    description = "RDS Proxy Secret Auth"
     iam_auth    = "DISABLED"
     auth_scheme = "SECRETS"
     secret_arn  = aws_secretsmanager_secret.super_secret.arn
@@ -238,7 +238,6 @@ resource "aws_db_proxy" "dogdb_iam_proxy" {
   auth {
     description = "RDS Proxy Auth"
     iam_auth    = "REQUIRED"
-    auth_scheme = "SECRETS"
     secret_arn  = aws_secretsmanager_secret.iam_secret.arn
   }
 

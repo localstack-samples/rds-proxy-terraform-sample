@@ -35,7 +35,7 @@ public class DeleteDogHandler implements RequestHandler<Map<String, Object>, Map
             }
             int dogId = Integer.parseInt((String) pathParameters.get("id"));
 
-            // Insert new dog record
+            // Delete dog record
             String query = "DELETE FROM Dogs WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, dogId);
@@ -44,7 +44,7 @@ public class DeleteDogHandler implements RequestHandler<Map<String, Object>, Map
 
             stmt.close();
 
-            System.out.println("Dog added successfully! Rows affected: " + rowsAffected);
+            System.out.println("Dog deleted successfully! Rows affected: " + rowsAffected);
 
             return Map.of("statusCode", 200, "body", "Dog deleted successfully!");
         } catch (Exception e) {
