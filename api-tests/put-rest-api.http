@@ -1,0 +1,21 @@
+### Put Dog Details
+PUT {{api}}:{{port}}/dev/dogs
+Content-Type: application/json
+
+{
+  "id": "3",
+  "name": "Buddy",
+  "age": "4",
+  "category": "Boofer"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+%}
+
+
+
+

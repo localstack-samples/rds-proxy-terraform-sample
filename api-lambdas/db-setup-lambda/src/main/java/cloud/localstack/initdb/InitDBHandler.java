@@ -18,7 +18,7 @@ import java.util.Map;
 public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
     private static final String DB_SECRET_ARN = System.getenv("DB_SECRET_ARN");
-    private static final Region REGION = Region.of(System.getenv("AWS_REGION"));
+    private static final Region REGION = Region.of("us-east-1");
     private static final String ENDPOINT = System.getenv("RDS_PROXY_ENDPOINT");
     private static final String DB_NAME = System.getenv("DB_NAME");
 
@@ -88,7 +88,7 @@ public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<St
             );
 
         } catch (Exception e) {
-            throw new RuntimeException("Error retrieving secrets from Secrets Manager", e);
+            throw new RuntimeException("Error retrieving secrets from Secrets Manager: " + e.getMessage(), e);
         }
     }
 

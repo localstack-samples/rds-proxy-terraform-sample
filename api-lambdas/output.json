@@ -1,1 +1,1 @@
-{"statusCode":500,"body":"Error granting roles: ERROR: role \"token_user\" already exists"}
+{"body":"Table created and roles granted successfully!","statusCode":200}

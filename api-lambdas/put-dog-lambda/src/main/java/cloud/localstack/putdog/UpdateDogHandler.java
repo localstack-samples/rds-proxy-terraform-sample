@@ -13,8 +13,8 @@ import java.util.Map;
 public class UpdateDogHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String REGION = System.getenv("AWS_REGION");
-    private static final int PORT = 4510;
+    private static final String REGION = "us-east-1";
+    private static final int PORT = Integer.parseInt(System.getenv("DB_PORT"));
     private static final String DB_USER = System.getenv("DB_USER");
     private static final String DATABASE_NAME = System.getenv("DATABASE_NAME");
     private static Connection connection;

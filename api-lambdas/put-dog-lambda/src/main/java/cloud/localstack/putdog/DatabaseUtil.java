@@ -19,7 +19,8 @@ public class DatabaseUtil {
     public static Connection getConnectionWithIamAuth(String username, String host, Integer port, String region, String databaseName) {
 
         String authToken = generateAuthToken(host, port, region, username);
-        String jdbcUrl = String.format("jdbc:postgresql://%s/%s",
+        System.out.println("Auth token: " + authToken);
+        String jdbcUrl = String.format("jdbc:postgresql://%s/%s?sslmode=require",
                 host, databaseName);
 
         try {

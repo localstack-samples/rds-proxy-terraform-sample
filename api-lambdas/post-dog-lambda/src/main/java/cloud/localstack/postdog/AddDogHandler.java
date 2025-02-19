@@ -51,7 +51,7 @@ public class AddDogHandler implements RequestHandler<Map<String, Object>, Map<St
                 stmt.close();
 
                 System.out.println("Dog added successfully! Rows affected: " + rowsAffected);
-                return Map.of("statusCode", 200, "body", "Dog updated successfully!");
+                return Map.of("statusCode", 200, "body", "Dog added successfully!");
 
             }
 
