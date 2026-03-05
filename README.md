@@ -7,11 +7,12 @@ This application provides a set of AWS Lambda functions to manage dog records, i
 
 ## Prerequisites
 
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
 - Java 21 (21.0.2-amzn)
 - Apache Maven (3.9.9)
 - AWS CLI & AWS CLI Local (aws-cli/1.33.44)
-- Terraform & [terraform-local](https://github.com/localstack/terraform-local) 
-- LocalStack CLI & Pro image (4.0.3)
+- Terraform & [terraform-local](https://github.com/localstack/terraform-local)
+- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli)
 
 ## Project Structure
 
@@ -20,6 +21,16 @@ This application provides a set of AWS Lambda functions to manage dog records, i
 - `put-dog-lambda/`: Contains the source code and build files for the `put-dog` Lambda function.
 - `delete-dog-lambda/`: Contains the source code and build files for the `delete-dog` Lambda function.
 - `db-setup-lambda/`: Contains the source code and build files for the `db-setup` Lambda function.
+
+## Start LocalStack
+
+Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
+
+```shell
+export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
+make start
+make ready
+```
 
 ## Setup
 
@@ -36,7 +47,9 @@ Ensure you have Java 21 and Maven installed. Then, build the Lambda functions:
 2. **Start LocalStack:**
 
 ```sh
-    DEBUG=1 localstack start
+    export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
+    make start
+    make ready
 ```
 
 3. **Deploy the infrastructure:**
