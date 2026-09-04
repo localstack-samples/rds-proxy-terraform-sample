@@ -608,6 +608,6 @@ resource "aws_lambda_function" "db-setup" {
 #   ]
 #
 #   provisioner "local-exec" {
-#     command = "awslocal lambda invoke --function-name db-setup --region us-east-1 output.json"
+#     command = "lstk aws lambda invoke --function-name db-setup --region us-east-1 output.json"
 #   }
 # }

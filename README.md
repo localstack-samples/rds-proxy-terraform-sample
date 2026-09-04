@@ -7,12 +7,12 @@ This application provides a set of AWS Lambda functions to manage dog records, i
 
 ## Prerequisites
 
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
 - Java 21 (21.0.2-amzn)
 - Apache Maven (3.9.9)
-- AWS CLI & AWS CLI Local (aws-cli/1.33.44)
-- Terraform & [terraform-local](https://github.com/localstack/terraform-local)
-- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli)
+- AWS CLI, required by `lstk aws`
+- Terraform, used via `lstk tf`
+- [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/)
 
 ## Project Structure
 
@@ -29,7 +29,6 @@ Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 ```shell
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
 make start
-make ready
 ```
 
 ## Setup
@@ -49,7 +48,6 @@ Ensure you have Java 21 and Maven installed. Then, build the Lambda functions:
 ```sh
     export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
     make start
-    make ready
 ```
 
 3. **Deploy the infrastructure:**
@@ -58,8 +56,8 @@ Navigate to the `terraform` directory and apply the Terraform configuration:
 
 ```sh
     cd terraform
-    tflocal init
-    tflocal apply --auto-approve
+    lstk tf init
+    lstk tf apply --auto-approve
  ```
 
 4. **Initialize the database:**
@@ -67,7 +65,7 @@ Navigate to the `terraform` directory and apply the Terraform configuration:
 Invoke the `db-setup` Lambda function to create the `dogs` table in the RDS PostgreSQL database:
 
 ```sh
-    awslocal lambda invoke --function-name db-setup --region us-east-1 output.json
+    lstk aws lambda invoke --function-name db-setup --region us-east-1 output.json
 ```
 
 ## Usage
@@ -92,7 +90,7 @@ The Lambda functions use the following environment variables:
 - `AWS_REGION`: AWS region.
 
 **Note:**
-If any of these environment variables are not set, please run `tflocal apply --auto-approve`. 
+If any of these environment variables are not set, please run `lstk tf apply --auto-approve`. 
 This can happen when the Lambda functions are deployed before the cluster is ready.
 You should see the following, whivh indicates that the environment variables have been set:
 ```sh
