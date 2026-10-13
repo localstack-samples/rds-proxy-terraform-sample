@@ -406,6 +406,8 @@ resource "aws_lambda_function" "get_dog" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "cloud.localstack.getdog.GetDogHandler"
   filename      = "../api-lambdas/get-dog-lambda/target/get-dog-lambda-1.0.0.jar"
+  timeout       = 30
+  memory_size   = 512
 
   vpc_config {
     subnet_ids         = [
@@ -430,7 +432,7 @@ resource "aws_lambda_function" "post_dog" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "cloud.localstack.postdog.AddDogHandler"
   filename      = "../api-lambdas/post-dog-lambda/target/post-dog-lambda-1.0.0.jar"
-  timeout       = 15
+  timeout       = 30
   memory_size   = 512
 
   vpc_config {
@@ -457,7 +459,7 @@ resource "aws_lambda_function" "put_dog" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "cloud.localstack.putdog.UpdateDogHandler"
   filename      = "../api-lambdas/put-dog-lambda/target/put-dog-lambda-1.0.0.jar"
-  timeout       = 15
+  timeout       = 30
   memory_size   = 512
 
   vpc_config {
@@ -471,6 +473,7 @@ resource "aws_lambda_function" "put_dog" {
   environment {
     variables = {
       HOST          = aws_db_proxy.dogdb_iam_proxy.endpoint
+      DB_PORT       = try(regex(":([0-9]+)$", aws_db_proxy.dogdb_iam_proxy.endpoint)[0], "5432")
       DATABASE_NAME = var.db_name
       DB_USER     = var.iam_username
       AWS_REGION    = var.aws_region
@@ -484,6 +487,8 @@ resource "aws_lambda_function" "delete_dog" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "cloud.localstack.deletedog.DeleteDogHandler"
   filename      = "../api-lambdas/delete-dog-lambda/target/delete-dog-lambda-1.0.0.jar"
+  timeout       = 30
+  memory_size   = 512
 
   vpc_config {
     subnet_ids         = [
@@ -582,6 +587,8 @@ resource "aws_lambda_function" "db-setup" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "cloud.localstack.initdb.InitDBHandler"
   filename      = "../api-lambdas/db-setup-lambda/target/db-setup-lambda-1.0.0.jar"
+  timeout       = 30
+  memory_size   = 512
 
   vpc_config {
     subnet_ids         = [

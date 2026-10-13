@@ -36,8 +36,10 @@ public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<St
                     "category VARCHAR(50))";
             stmt.executeUpdate(createTableQuery);
 
-            // Create user token_user
-            stmt.executeUpdate("CREATE USER token_user");
+            // Create user token_user, unless a previous run already did
+            stmt.executeUpdate("DO $$ BEGIN " +
+                    "IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'token_user') THEN CREATE USER token_user; END IF; " +
+                    "END $$");
 
             // Grant roles to token_user
             stmt.executeUpdate("GRANT rds_iam TO token_user");

@@ -38,8 +38,7 @@ make start
 Ensure you have Java 21 and Maven installed. Then, build the Lambda functions:
 
 ```sh
-    cd api-lambdas
-    mvn clean package
+    make build
 ```
 *Enjoy some elevator music while the build completes.*
 
@@ -52,20 +51,28 @@ Ensure you have Java 21 and Maven installed. Then, build the Lambda functions:
 
 3. **Deploy the infrastructure:**
 
-Navigate to the `terraform` directory and apply the Terraform configuration:
+Apply the Terraform configuration in `terraform/`:
 
 ```sh
-    cd terraform
-    lstk tf init
-    lstk tf apply --auto-approve
- ```
+    make deploy
+```
 
 4. **Initialize the database:**
 
 Invoke the `db-setup` Lambda function to create the `dogs` table in the RDS PostgreSQL database:
 
 ```sh
-    lstk aws lambda invoke --function-name db-setup --region us-east-1 output.json
+    make init-db
+```
+
+The function is safe to invoke again.
+
+5. **Test the API:**
+
+`make test` initializes the database, then creates, reads, updates and deletes a dog through the API. It covers both proxies: POST and DELETE use the secret auth proxy, PUT uses an IAM auth token with the IAM proxy, and GET uses the RDS Data API.
+
+```sh
+    make test
 ```
 
 ## Usage
@@ -87,12 +94,13 @@ The Lambda functions use the following environment variables:
 - `DATABASE_NAME`: Name of the database.
 - `DB_CLUSTER_ARN`: ARN of the RDS cluster.
 - `HOST`: Endpoint of the RDS proxy.
+- `DB_PORT`: Port of the IAM auth RDS proxy, used to sign the IAM auth token.
 - `AWS_REGION`: AWS region.
 
 **Note:**
 If any of these environment variables are not set, please run `lstk tf apply --auto-approve`. 
 This can happen when the Lambda functions are deployed before the cluster is ready.
-You should see the following, whivh indicates that the environment variables have been set:
+You should see the following, which indicates that the environment variables have been set:
 ```sh
     Apply complete! Resources: 0 added, 6 changed, 0 destroyed.
 ```
@@ -102,7 +110,7 @@ You should see the following, whivh indicates that the environment variables hav
 To clean up the resources created by Terraform, run:
 
 ```sh
-terraform destroy
+cd terraform && lstk tf destroy --auto-approve
 ```
 
 ## Testing endpoints
