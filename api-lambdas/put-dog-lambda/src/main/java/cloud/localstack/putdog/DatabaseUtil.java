@@ -20,8 +20,8 @@ public class DatabaseUtil {
 
         String authToken = generateAuthToken(host, port, region, username);
         System.out.println("Auth token: " + authToken);
-        String jdbcUrl = String.format("jdbc:postgresql://%s/%s?sslmode=require",
-                host, databaseName);
+        String jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s?sslmode=require",
+                host, port, databaseName);
 
         try {
             Properties properties = new Properties();

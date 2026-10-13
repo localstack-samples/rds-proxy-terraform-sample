@@ -20,7 +20,16 @@ stop:		## Stop LocalStack
 logs:		## Save the logs in a separate file
 	@lstk logs > logs.txt
 
+build:		## Build the Lambda functions
+	cd api-lambdas && mvn -B clean package
+
 deploy:		## Deploy infrastructure using Terraform
 	cd terraform && lstk tf init && lstk tf apply --auto-approve
 
-.PHONY: usage install start stop logs deploy
+init-db:	## Create the dogs table and database users
+	lstk aws lambda invoke --function-name db-setup --cli-read-timeout 120 output.json && cat output.json
+
+test:		## Initialize the database and test the API end to end
+	./test.sh
+
+.PHONY: usage install start stop logs build deploy init-db test
