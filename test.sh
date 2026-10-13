@@ -12,7 +12,7 @@ trap 'rm -f "$OUT"' EXIT
 for fn in post-dog put-dog delete-dog db-setup; do
   host=$(lstk aws lambda get-function-configuration --function-name "$fn" \
     --query 'Environment.Variables.HOST || Environment.Variables.RDS_PROXY_ENDPOINT' --output text)
-  if [ -z "$host" ] || [ "$host" = "None" ]; then
+  if [ -z "$host" ] || [ "$host" = "None" ] || [[ "$host" == :* ]]; then
     echo "Test failed: $fn has no proxy endpoint set. Run 'lstk tf apply --auto-approve' again."
     exit 1
   fi

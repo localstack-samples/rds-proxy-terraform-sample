@@ -445,7 +445,7 @@ resource "aws_lambda_function" "post_dog" {
 
   environment {
     variables = {
-      HOST          = aws_db_proxy.dogdb_secret_proxy.endpoint
+      HOST          = "${aws_db_proxy.dogdb_secret_proxy.endpoint}:${aws_rds_cluster.dogdb.port}"
       DATABASE_NAME = var.db_name
       DB_USER     = var.db_username
       USER_PASSWORD = var.db_password
@@ -473,7 +473,7 @@ resource "aws_lambda_function" "put_dog" {
   environment {
     variables = {
       HOST          = aws_db_proxy.dogdb_iam_proxy.endpoint
-      DB_PORT       = try(regex(":([0-9]+)$", aws_db_proxy.dogdb_iam_proxy.endpoint)[0], "5432")
+      DB_PORT       = aws_rds_cluster.dogdb.port
       DATABASE_NAME = var.db_name
       DB_USER     = var.iam_username
       AWS_REGION    = var.aws_region
@@ -500,7 +500,7 @@ resource "aws_lambda_function" "delete_dog" {
 
   environment {
     variables = {
-      HOST          = aws_db_proxy.dogdb_secret_proxy.endpoint
+      HOST          = "${aws_db_proxy.dogdb_secret_proxy.endpoint}:${aws_rds_cluster.dogdb.port}"
       SECRET_ARN    = aws_secretsmanager_secret.super_secret.arn
       AWS_REGION    = var.aws_region
       DATABASE_NAME = var.db_name
@@ -602,7 +602,7 @@ resource "aws_lambda_function" "db-setup" {
     variables = {
       AWS_REGION         = var.aws_region
       DB_SECRET_ARN      = aws_secretsmanager_secret.super_secret.arn
-      RDS_PROXY_ENDPOINT = aws_db_proxy.dogdb_secret_proxy.endpoint
+      RDS_PROXY_ENDPOINT = "${aws_db_proxy.dogdb_secret_proxy.endpoint}:${aws_rds_cluster.dogdb.port}"
       DB_NAME            = var.db_name
     }
   }
